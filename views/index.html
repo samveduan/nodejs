@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div style="padding: 50px;">
+    <div style="padding-left: 200px; padding-right: 200px; padding-top: 50px;">
         <p>
             <button class="btn btn-primary" id="add-user-button">
                 <i class="glyphicon glyphicon-plus"></i>
@@ -285,7 +285,7 @@
                     field: 'age',
                     title: '年龄'
                 }, {
-                    field: 'gender',
+                    field: 'sex',
                     title: '性别'
                 }, {
                     field: 'city',
@@ -293,7 +293,7 @@
                 }, {
                     title: '编辑',
                     formatter: function (value, row, index) {
-                        return `<button class="btn btn-action" type="button" title="编辑" onclick="editUser(${row.id}, '${row.name}', '${row.age}', '${row.gender}', '${row.city}')" style="background: none;">
+                        return `<button class="btn btn-action" type="button" title="编辑" onclick="editUser(${row.id}, '${row.name}', '${row.age}', '${row.sex}', '${row.city}')" style="background: none;">
                             <i class="fa fa-edit" id="iconedit"></i>
                             </button>`
                     }
@@ -367,7 +367,7 @@
             var params = {
                 name: $("#add-user-modal-name").val(),
                 age: $("#add-user-modal-age").val(),
-                gender: $("#add-user-modal-sex").val(),
+                sex: $("#add-user-modal-sex").val(),
                 city: $("#add-user-modal-city").val()
             }
 
@@ -435,7 +435,7 @@
         })
 
         // 编辑
-        function editUser(id, name, age, gender, city) {
+        function editUser(id, name, age, sex, city) {
             $("#edit-user-modal").modal({
                 show: true,
                 backdrop: 'static'
@@ -444,7 +444,7 @@
             $("#edit-user-modal-id").val(id);
             $("#edit-user-modal-name").val(name);
             $("#edit-user-modal-age").val(age);
-            $("#edit-user-modal-sex").val(gender);
+            $("#edit-user-modal-sex").val(sex);
             $("#edit-user-modal-city").val(city);
         }
 
@@ -499,7 +499,7 @@
                 id: $("#edit-user-modal-id").val(),
                 name: $("#edit-user-modal-name").val(),
                 age: $("#edit-user-modal-age").val(),
-                gender: $("#edit-user-modal-sex").val(),
+                sex: $("#edit-user-modal-sex").val(),
                 city: $("#edit-user-modal-city").val()
             }
 
@@ -515,7 +515,7 @@
                         $('#edit-user-modal-form')[0].reset();
                         $('#edit-user-modal-form').data('bootstrapValidator').resetForm();
                         $("#edit-user-modal").modal("hide");
-                        toastr.success("编辑用户成功！", "成功提示");
+                        toastr.success(data.msg, "成功提示");
                         $userTable.bootstrapTable("refresh");
                     } else {
                         toastr.error(data.msg, "错误提示");
