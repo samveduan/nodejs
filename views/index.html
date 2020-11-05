@@ -390,7 +390,8 @@
                     }
                 },
                 error: function (data) {
-                    toastr.error("操作失败！", "错误提示");
+                    console.log(data)
+                    toastr.error(data.responseJSON.message, "错误提示");
                 }
             });
         });
@@ -428,6 +429,7 @@
                         }
                     },
                     error: function (data) {
+                        console.log(data);
                         toastr.error("网络错误，操作失败！", "错误提示");
                     }
                 });
