@@ -24,6 +24,8 @@
 // 调用 next 方法也是要匹配的（不是调用紧挨着的那个）
 
 // 有输入就要有输出，遇到输出则停止在当前中间件，即使在当前中间件的输出之前已经有next()
+
+// 总结就是：进来后找匹配的中间件，匹配到了如果有输出则终止，没有输出（一般是异常）则可以通过调用next方法继续向后找到第一个匹配的中间件（一般是错误处理中间件）
 var express = require("express")
 var fs = require("fs")
 var path = require("path")
@@ -55,7 +57,7 @@ app.get("/", function (req, res) {
 app.get("/list", function (req, res, next) {
     var dataObj = { ret: false, total: 0, rows: [], msg: "" };
 
-    connection.query('SELECT * FROM `users`', function (error, results, fields) {
+    connection.query('SELECT * FROM users', function (error, results, fields) {
         if (!error) {
             dataObj.total = results.length;
             dataObj.ret = true;
@@ -72,7 +74,7 @@ app.get("/list", function (req, res, next) {
 app.post("/add", function (req, res, next) {
     var dataObj = { ret: false, msg: "" };
 
-    connection.query("INSERT INTO users(id, name, sex, city, age) VALUES(NULL, '" + req.body.name + "','" + req.body.sex + "','" + req.body.city + "','" + req.body.age + "')", function (error, results, fields) {
+    connection.query(`INSERT INTO users(id, name, sex, city, age) VALUES(NULL, '${req.body.name}', '${req.body.sex}', '${req.body.city}', '${req.body.age}')`, function (error, results, fields) {
         if (!error) {
             dataObj.ret = true;
             dataObj.msg = "添加用户成功！";
@@ -90,7 +92,7 @@ app.post("/add", function (req, res, next) {
 app.post("/edit", function (req, res, next) {
     let dataObj = { ret: false, msg: '' };
 
-    connection.query("UPDATE users SET name='" + req.body.name + "',sex='" + req.body.sex + "',city='" + req.body.city + "',age='" + req.body.age + "'WHERE id='" + req.body.id + "'", function (error, results, fields) {
+    connection.query(`UPDATE users SET name='${req.body.name}',sex='${req.body.sex}',city='${req.body.city}',age='${req.body.age}' WHERE id='${req.body.id}'`, function (error, results, fields) {
         if (!error) {
             dataObj.ret = true;
             dataObj.msg = "更新用户成功！";
@@ -106,7 +108,7 @@ app.delete("/delete", function (req, res, next) {
 
     var idArr = JSON.parse(req.body.userIdArr);
 
-    connection.query("DELETE FROM users WHERE id='" + idArr[0] + "'", function (error, results, fields) {
+    connection.query(`DELETE FROM users WHERE id='${idArr[0]}'`, function (error, results, fields) {
         if (!error) {
             dataObj.ret = true;
             dataObj.msg = "删除用户成功！";
